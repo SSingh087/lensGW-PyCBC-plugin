@@ -1,5 +1,5 @@
 
-def lensed_gw_fd(loc_lensed, strain, hp, hc, freq,
+def lensed_gw_fd(loc_lensed,
               diff         = None,
               scaled       = False,
               scale_factor = None,
@@ -8,7 +8,7 @@ def lensed_gw_fd(loc_lensed, strain, hp, hc, freq,
                                     scaled= False, scale_factor=None, cosmo=None)
     return hp_tilde_lensed.to_frequencyseries(), hc_tilde_lensed.to_frequencyseries()
     
-def lensed_gw_td(loc_lensed, strain, hp, hc, freq,
+def lensed_gw_td(loc_lensed,
               diff         = None,
               scaled       = False,
               scale_factor = None,
@@ -16,6 +16,8 @@ def lensed_gw_td(loc_lensed, strain, hp, hc, freq,
     from lensGW.waveform.waveform_utils import lens_waveform_model
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
     zL, zS, lens_model_list, kwargs_lens_list, mtot = lens_waveform_model(loc_lensed).param_initialize()
+    print("Here")
+    strain, hp, hc, freq = unlensed_gw()
     Fmag = geometricalOpticsMagnification(freq.data,
                                        Img_ra,Img_dec,
                                        source_pos_x,source_pos_y,

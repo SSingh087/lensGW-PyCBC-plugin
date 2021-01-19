@@ -1,0 +1,21 @@
+Metadata-Version: 1.1
+Name: pycbc-lensGW
+Version: 0.0.dev0
+Summary: lensGW plugin for PyCBC
+Home-page: www.bosex.org
+Author: Shashwat Singh
+Author-email: shashwat98singh@gmail.com
+License: UNKNOWN
+Download-URL: https://github.com/SSingh087/lensGW-PyCBC-plugin0.0.dev0
+Description: UNKNOWN
+Keywords: pycbc,signal processing,gravitational waves,strong gravitational lensing
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
