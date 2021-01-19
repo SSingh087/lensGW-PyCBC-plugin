@@ -2,6 +2,7 @@ README.md
 descr.rst
 lgw.py
 setup.py
+__pycache__/lgw.cpython-38.pyc
 dist/pycbc_lensGW-0.0.dev0-py3.8.egg
 pycbc_lensGW.egg-info/PKG-INFO
 pycbc_lensGW.egg-info/SOURCES.txt
