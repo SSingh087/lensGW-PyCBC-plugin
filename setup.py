@@ -18,7 +18,7 @@ setup (
     url = 'www.bosex.org',
     download_url = 'https://github.com/SSingh087/lensGW-PyCBC-plugin%s' % VERSION,
     keywords = ['pycbc', 'signal processing', 'gravitational waves','strong gravitational lensing'],
-    install_requires = ['pycbc'],
+    install_requires = ['pycbc','lensGW'],
     py_modules = ['lgw'],
     entry_points = {"pycbc.waveform.td":"revchirp = revchirp:reverse_chirp_td",
                     "pycbc.waveform.fd":"revchirp = revchirp:reverse_chirp_fd"},
