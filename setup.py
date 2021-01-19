@@ -20,8 +20,8 @@ setup (
     keywords = ['pycbc', 'signal processing', 'gravitational waves','strong gravitational lensing'],
     install_requires = ['pycbc','lensGW'],
     py_modules = ['lgw'],
-    entry_points = {"pycbc.waveform.td":"revchirp = revchirp:reverse_chirp_td",
-                    "pycbc.waveform.fd":"revchirp = revchirp:reverse_chirp_fd"},
+    entry_points = {"pycbc.waveform.td":"lgw = lgw:lensed_gw_td",
+                    "pycbc.waveform.fd":"lgw = lgw:lensed_gw_fd"},
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
