@@ -8,7 +8,7 @@ from setuptools import find_packages
 
 VERSION = '0.0.dev0'
 
-setup (
+setup ( 
     name = 'pycbc-lensGW',
     version = VERSION,
     description = 'lensGW plugin for PyCBC',
