@@ -9,17 +9,17 @@ from setuptools import find_packages
 VERSION = '0.0.dev0'
 
 setup (
-    name = 'pycbc-revchirp',
+    name = 'pycbc-lensGW',
     version = VERSION,
-    description = 'An example waveform plugin for PyCBC',
+    description = 'lensGW plugin for PyCBC',
     long_description = open('descr.rst').read(),
-    author = 'T',
-    author_email = 'test.org',
-    url = 'test.org',
-    download_url = 'https://github.com/gwastro/revchirp/tarball/v%s' % VERSION,
-    keywords = ['pycbc', 'signal processing', 'gravitational waves'],
-    install_requires = ['pycbc'],
-    py_modules = ['revchirp'],
+    author = 'Shashwat Singh',
+    author_email = 'shashwat98singh@gmail.com',
+    url = 'www.bosex.org',
+    download_url = 'https://github.com/SSingh087/lensGW-PyCBC-plugin%s' % VERSION,
+    keywords = ['pycbc', 'signal processing', 'gravitational waves','strong gravitational lensing'],
+    install_requires = ['pycbc','lensGW'],
+    py_modules = ['lgw'],
     entry_points = {"pycbc.waveform.td":"revchirp = revchirp:reverse_chirp_td",
                     "pycbc.waveform.fd":"revchirp = revchirp:reverse_chirp_fd"},
     classifiers=[
