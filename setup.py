@@ -1,12 +1,9 @@
 #!/usr/bin/env python
-"""
-setup.py file for reverse chirp example pycbc waveform plugin package
-"""
 
 from setuptools import Extension, setup, Command
 from setuptools import find_packages
 
-VERSION = '0.0.dev0'
+VERSION = '1.0.0'
 
 setup ( 
     name = 'pycbc-lensGW',
@@ -15,7 +12,6 @@ setup (
     long_description = open('descr.rst').read(),
     author = 'Shashwat Singh',
     author_email = 'shashwat98singh@gmail.com',
-    url = 'www.bosex.org',
     download_url = 'https://github.com/SSingh087/lensGW-PyCBC-plugin%s' % VERSION,
     keywords = ['pycbc', 'signal processing', 'gravitational waves','strong gravitational lensing'],
     install_requires = ['pycbc'],
