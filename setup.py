@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 
-from setuptools import Extension, setup, Command
-from setuptools import find_packages
+from setuptools import Extension, setup, Command, find_packages
+from codecs import open
 
 VERSION = '1.0.0'
+
+def readme():
+    with open('README.md') as f:
+        return f.read()
 
 setup ( 
     name = 'pycbc-lensGW',
     version = VERSION,
     description = 'lensGW plugin for PyCBC',
-    long_description = open('descr.rst').read(),
+    long_description = readme(),
     author = 'Shashwat Singh',
     author_email = 'shashwat98singh@gmail.com',
     download_url = 'https://github.com/SSingh087/lensGW-PyCBC-plugin%s' % VERSION,
