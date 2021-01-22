@@ -1,3 +1,19 @@
+# Copyright (C) 2021  Shashwat Singh
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
 def lensed_gw_fd(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                 mL2  = 100,lens_model_list = [],
                 approx='IMRPhenomD',mass1=50,mass2=50,spin1x=0.0,spin1y=0.0,
@@ -13,6 +29,7 @@ def lensed_gw_fd(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                                                     polarization=1., eccentricity=0,end_time=1192529720)
     
     return hp_tilde_lensed.to_frequencyseries(), hc_tilde_lensed.to_frequencyseries()
+
 
 def lensed_gw_td(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                 mL2  = 100,lens_model_list = [],
@@ -41,7 +58,6 @@ def lensed_gw_td(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                                          eccentricity = eccentricity,
                                         )
     hp.start_time += end_time
-    # hc.start_time += end_time ----------- this not required 
     
     freq = waveform.utils.frequency_from_polarizations(hp, hc)
     Fmag = geometricalOpticsMagnification(freq.data,
@@ -63,5 +79,4 @@ def lensed_gw_td(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
     hc_tilde_lensed = TimeSeries(hc_tilde_lensed, delta_t=hc.delta_t)
     hc_tilde_lensed.start_time = hc.start_time
 
-    #waveform.add_custom_waveform('test',waveform_gen,'time', force=True)
     return hp_tilde_lensed, hc_tilde_lensed
