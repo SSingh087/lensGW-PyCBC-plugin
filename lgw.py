@@ -19,7 +19,7 @@ def lensed_gw_fd(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                 approx='IMRPhenomD',mass1=50,mass2=50,spin1x=0.0,spin1y=0.0,
                 spin1z=0.0,spin2x=0.0,spin2y=0.0,spin2z=0.0,inclination=0.0,
                 distance=500,coa_phase=0.0,delta_t=1.0/4096,delta_f=4096,f_lower=30,
-                polarization=1., eccentricity=0,end_time=1192529720,**kwds):
+                eccentricity=0,**kwds):
 
     hp_tilde_lensed, hc_tilde_lensed = lensed_gw_td(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                                                     mL2  = 100,lens_model_list = [],approx='IMRPhenomD',
@@ -57,8 +57,7 @@ def lensed_gw_td(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL1  = 100,
                                          delta_t= delta_t, f_lower= f_lower,
                                          eccentricity = eccentricity,
                                         )
-    hp.start_time += end_time
-    
+
     freq = waveform.utils.frequency_from_polarizations(hp, hc)
     Fmag = geometricalOpticsMagnification(freq.data,
                                            Img_ra,Img_dec,
