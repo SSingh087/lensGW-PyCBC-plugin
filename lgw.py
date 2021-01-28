@@ -29,11 +29,12 @@ def lensed_gw_fd(y0 = 0,y1 = 0,l0 = 0,l1 = 0,zS = 0,zL = 0,mL = [100,100],lens_m
     
     return hp_tilde_lensed.to_frequencyseries(), hc_tilde_lensed.to_frequencyseries()
 
-
-def lensed_gw_td(y0 = 0,y1 = 0, l0 = 0,l1 = 0,zS = 0,zL = 0,mL = [100,100], lens_model_list = [],
-                approx='IMRPhenomD', mass1=50, mass2=50, delta_t=1.0/4096, delta_f=4096, f_lower=30,
-                spin1x=0.0,spin1y=0.0, spin1z=0.0, spin2x=0.0, spin2y=0.0, spin2z=0.0,
-                inclination=0.0, distance=500, coa_phase=0.0, eccentricity=0, **kwds):
+def lensed_gw_td(y0 = 0.1, y1 = 0.7937005, l0 = 0.5,l1 = 0,zS = 2.0,zL = 0.5, mL=[1e3,1e3], 
+                lens_model_list = ['POINT_MASS','POINT_MASS'],
+                approx='IMRPhenomD',mass1=100,mass2=100,spin1x=0.0,spin1y=0.0,
+                spin1z=0.9,spin2x=0.0,spin2y=0.0,spin2z=0.4,inclination=1.23,
+                distance=500,coa_phase=2.45,delta_t=1.0/16384,delta_f=16384,f_lower=30,
+                eccentricity=0 **kwds):
     
     from lensGW.waveform.waveform_utils import lens_waveform_model
     from lensGW.amplification_factor.amplification_factor import geometricalOpticsMagnification
