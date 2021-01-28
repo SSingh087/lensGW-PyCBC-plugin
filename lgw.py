@@ -39,7 +39,6 @@ def lensed_gw_td(y0 = 0,y1 = 0, l0 = 0,l1 = 0,zS = 0,zL = 0,mL = [100,100], lens
     from pycbc.types.timeseries import TimeSeries
     from pycbc import waveform
     
-    print(y0,y1,l0,l1,zS,zL,mL,lens_model_list)
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
                 _, _, _, kwargs_lens_list = lens_waveform_model(None).eval_param(
                                                             y0,y1,l0,l1,zS,zL,mL,lens_model_list)
