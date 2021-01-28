@@ -34,7 +34,7 @@ def lensed_gw_td(y0 = 0.1, y1 = 0.7937005, l0 = 0.5,l1 = 0,zS = 2.0,zL = 0.5, mL
                 approx='IMRPhenomD',mass1=100,mass2=100,spin1x=0.0,spin1y=0.0,
                 spin1z=0.9,spin2x=0.0,spin2y=0.0,spin2z=0.4,inclination=1.23,
                 distance=500,coa_phase=2.45,delta_t=1.0/16384,delta_f=16384,f_lower=30,
-                eccentricity=0 **kwds):
+                eccentricity=0, **kwds):
     
     from lensGW.waveform.waveform_utils import lens_waveform_model
     from lensGW.amplification_factor.amplification_factor import geometricalOpticsMagnification
