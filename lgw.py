@@ -40,11 +40,13 @@ def lensed_gw_td(y0 = 0,y1 = 0, l0 = 0,l1 = 0,zS = 0,zL = 0,mL = [100,100], lens
     from lensGW.utils.utils import get_lensed_gws
     from pycbc.types.timeseries import TimeSeries
     from pycbc import waveform
-
+    
+    print(lens_model_list)
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
     zL, zS, lens_model_list, kwargs_lens_list = lens_waveform_model(None).eval_param(
-                                        y0,y1,l0,l1,zS,zL,mL,lens_model_list)
-
+                                                        y0,y1,l0,l1,zS,zL,mL,lens_model_list)
+    if 'approximant' in kwds:
+        kwds.pop("approximant")
     hp, hc = waveform.get_td_waveform(approximant=approx, mass1=mass1, mass2=mass2, distance=distance,
                                          spin1z=spin1z, spin1x=spin1x, spin1y=spin1y,
                                          spin2z=spin2z, spin2x=spin2x, spin2y=spin2y,
@@ -69,5 +71,4 @@ def lensed_gw_td(y0 = 0,y1 = 0, l0 = 0,l1 = 0,zS = 0,zL = 0,mL = [100,100], lens
     
     hp_tilde_lensed = TimeSeries(hp_tilde_lensed, delta_t=hp.delta_t)
     hc_tilde_lensed = TimeSeries(hc_tilde_lensed, delta_t=hc.delta_t)
-
     return hp_tilde_lensed, hc_tilde_lensed
