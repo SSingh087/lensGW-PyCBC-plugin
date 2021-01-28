@@ -59,9 +59,7 @@ def lensed_gw_td(y0 = 0.1, y1 = 0.7937005, l0 = 0.5,l1 = 0,zS = 2.0,zL = 0.5, mL
                                            Img_ra,Img_dec,
                                            source_pos_x,source_pos_y,
                                            zL,zS,
-                                           lens_model_list, kwargs_lens_list,
-                                           diff=None, scaled=False,
-                                           scale_factor=None, cosmo=None)
+                                           lens_model_list, kwargs_lens_list)
     #------------return numpy values---------------#
     hp_tilde_lensed, hc_tilde_lensed = get_lensed_gws(Fmag, hp.data, hc.data)
 
