@@ -57,13 +57,13 @@ def lensed_gw_fd(**kwargs):
     else:
         spin2z = 0.
     if 'inclination' in kwargs:
-        inclination = kwargs.pop['inclination']
+        inclination = kwargs.pop('inclination']
     if 'distance' in kwargs:
-        distance = kwargs.pop['distance']
+        distance = kwargs.pop('distance')
     if 'coa_phase' in kwargs:
-        coa_phase = kwargs.pop['coa_phase']
+        coa_phase = kwargs.pop('coa_phase')
     if 'eccentricity' in kwargs:
-        eccentricity = kwargs.pop['eccentricity']
+        eccentricity = kwargs.pop('eccentricity')
 
     hp_tilde_lensed, hc_tilde_lensed = lensed_gw_td(
                                 y0 = y0, y1 = y1, l0 = l0, l1 = l1, zS = zS, zL = zL,
@@ -128,13 +128,13 @@ def lensed_gw_td(**kwargs):
     else:
         spin2z = 0.
     if 'inclination' in kwargs:
-        inclination = kwargs.pop['inclination']
+        inclination = kwargs.pop('inclination']
     if 'distance' in kwargs:
-        distance = kwargs.pop['distance']
+        distance = kwargs.pop('distance')
     if 'coa_phase' in kwargs:
-        coa_phase = kwargs.pop['coa_phase']
+        coa_phase = kwargs.pop('coa_phase')
     if 'eccentricity' in kwargs:
-        eccentricity = kwargs.pop['eccentricity']
+        eccentricity = kwargs.pop('eccentricity')
 
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
                 _, _, _, kwargs_lens_list = lens_waveform_model(None).eval_param(
