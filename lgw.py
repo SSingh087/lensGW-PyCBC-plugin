@@ -128,7 +128,7 @@ def lensed_gw_td(**kwargs):
     else:
         spin2z = 0.
     if 'inclination' in kwargs:
-        inclination = kwargs.pop('inclination']
+        inclination = kwargs.pop('inclination')
     if 'distance' in kwargs:
         distance = kwargs.pop('distance')
     if 'coa_phase' in kwargs:
