@@ -1,18 +1,3 @@
-# Copyright (C) 2021  Shashwat Singh
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the
-# Free Software Foundation; either version 3 of the License, or (at your
-# option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-# Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
 def lensed_gw_fd(**kwargs):
 
     y0 = kwargs['y0']
@@ -26,7 +11,7 @@ def lensed_gw_fd(**kwargs):
     approx = kwargs['approx']
     mass1 = kwargs['mass1']
     mass2 = kwargs['mass2']
-    delta_t = kwargs['delta_t']
+    delta_f = kwargs['delta_f']
     f_lower = kwargs['f_lower']
     distance = kwargs['distance']
     inclination = kwargs['inclination']
@@ -43,7 +28,7 @@ def lensed_gw_fd(**kwargs):
                                 y0 = y0, y1 = y1, l0 = l0, l1 = l1, zS = zS, zL = zL,
                                 mL = mL, lens_model_list = lens_model_list,
                                 approx = approx, mass1 = mass1, mass2 = mass2,
-                                delta_t = delta_t, delta_f = delta_f, f_lower = f_lower,
+                                delta_t = 1./delta_f, f_lower = f_lower,
                                 spin1x = spin1x, spin1y = spin1y, spin1z = spin1z,
                                 spin2x = spin2x, spin2y = spin2y, spin2z = spin2z, 
                                 inclination = inclination, distance = distance,
@@ -85,7 +70,7 @@ def lensed_gw_td(**kwargs):
     spin2y = kwargs['spin2y']
     spin2z = kwargs['spin2z']
     
-    mL = array(mL,data=float64)
+    mL = array(mL,dtype=float64)
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
                 _, _, _, kwargs_lens_list = lens_waveform_model(None).eval_param(
                                                             y0,y1,l0,l1,zS,zL,mL,lens_model_list)
