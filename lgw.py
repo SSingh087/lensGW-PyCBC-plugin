@@ -27,7 +27,6 @@ def lensed_gw_fd(**kwargs):
     mass1 = kwargs['mass1']
     mass2 = kwargs['mass2']
     delta_t = kwargs['delta_t']
-    delta_f = kwargs['delta_f']
     f_lower = kwargs['f_lower']
     distance = kwargs['distance']
     inclination = kwargs['inclination']
@@ -39,7 +38,6 @@ def lensed_gw_fd(**kwargs):
     spin2x = kwargs['spin2x']
     spin2y = kwargs['spin2y']
     spin2z = kwargs['spin2z']
-
 
     hp_tilde_lensed, hc_tilde_lensed = lensed_gw_td(
                                 y0 = y0, y1 = y1, l0 = l0, l1 = l1, zS = zS, zL = zL,
@@ -61,6 +59,7 @@ def lensed_gw_td(**kwargs):
     from lensGW.utils.utils import get_lensed_gws
     from pycbc.types.timeseries import TimeSeries
     from pycbc import waveform
+    from numpy import array, float64
     
     y0 = kwargs['y0']
     y1 = kwargs['y1']
@@ -74,7 +73,6 @@ def lensed_gw_td(**kwargs):
     mass1 = kwargs['mass1']
     mass2 = kwargs['mass2']
     delta_t = kwargs['delta_t']
-    delta_f = kwargs['delta_f']
     f_lower = kwargs['f_lower']
     distance = kwargs['distance']
     inclination = kwargs['inclination']
@@ -86,7 +84,8 @@ def lensed_gw_td(**kwargs):
     spin2x = kwargs['spin2x']
     spin2y = kwargs['spin2y']
     spin2z = kwargs['spin2z']
-
+    
+    mL = array(mL,data=float64)
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
                 _, _, _, kwargs_lens_list = lens_waveform_model(None).eval_param(
                                                             y0,y1,l0,l1,zS,zL,mL,lens_model_list)
