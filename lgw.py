@@ -46,9 +46,9 @@ def get_lens_param(is_td=True, **kwargs):
         hc_tilde_lensed.start_time += hc.start_time
         return hp_tilde_lensed, hc_tilde_lensed  
     else:
-        hp_tilde_lensed = FrequencySeries(hp_tilde_lensed, delta_f=hp.delta_f, dtype=float64)
+        hp_tilde_lensed = FrequencySeries(hp_tilde_lensed, delta_f=hp.delta_f)
         hp_tilde_lensed.start_time += hp.start_time
-        hc_tilde_lensed = FrequencySeries(hc_tilde_lensed, delta_f=hc.delta_f, dtype=float64)
+        hc_tilde_lensed = FrequencySeries(hc_tilde_lensed, delta_f=hc.delta_f)
         hc_tilde_lensed.start_time += hc.start_time
         return hp_tilde_lensed, hc_tilde_lensed  
 
