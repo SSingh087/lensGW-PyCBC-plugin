@@ -1,6 +1,0 @@
-[pycbc.waveform.fd]
-lgw = lgw:lensed_gw_fd
-
-[pycbc.waveform.td]
-lgw = lgw:lensed_gw_td
-
