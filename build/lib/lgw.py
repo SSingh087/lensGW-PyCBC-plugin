@@ -16,8 +16,9 @@ def get_lens_param(is_td=True, **kwargs):
     zL = kwargs['zL']
     mL = kwargs['mL']
     lens_model_list = kwargs['lens_model_list']
+    mL = array(mL,dtype=float64)
     Img_ra, Img_dec, source_pos_x, source_pos_y,\
-                _, _, eta0, eta1, _, kwargs_lens_list = lens_waveform_model(None).eval_param(
+                _, _, _, kwargs_lens_list = lens_waveform_model(None).eval_param(
                                                             y0,y1,l0,l1,zS,zL,mL,lens_model_list)
                 
     if "approximant" in kwargs:

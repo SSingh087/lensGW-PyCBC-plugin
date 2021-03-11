@@ -1,0 +1,9 @@
+README.md
+lgw.py
+setup.py
+pycbc_lensGW.egg-info/PKG-INFO
+pycbc_lensGW.egg-info/SOURCES.txt
+pycbc_lensGW.egg-info/dependency_links.txt
+pycbc_lensGW.egg-info/entry_points.txt
+pycbc_lensGW.egg-info/requires.txt
+pycbc_lensGW.egg-info/top_level.txt
