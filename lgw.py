@@ -15,16 +15,17 @@ def get_lens_param(is_td=True, **kwargs):
     zS = kwargs['zS']
     zL = kwargs['zL']
     mL = kwargs['mL']
+    optim = kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
     mL,l0,l1 = array(mL,dtype=float64), array(l0,dtype=float64), array(l1,dtype=float64)
     if len(mL>1):
         Img_ra, Img_dec, source_pos_x, source_pos_y, _, _, _, _,\
         _, kwargs_lens_list = lens_waveform_model(None).eval_param(
-                                                        y0,y1,l0,l1,zS,zL,mL,lens_model_list)
+                                                    y0,y1,l0,l1,zS,zL,mL,lens_model_list,optim)
     elif len(mL)==1:
         Img_ra, Img_dec, source_pos_x, source_pos_y, _, _, _, _,\
         lens_model_list, kwargs_lens_list=lens_waveform_model(None).eval_param(
-                                                        y0,y1,l0,l1,zS,zL,mL,lens_model_list)
+                                                    y0,y1,l0,l1,zS,zL,mL,lens_model_list,optim)
 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
