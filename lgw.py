@@ -6,14 +6,10 @@ from pycbc.types.frequencyseries import FrequencySeries
 from pycbc import waveform
 from numpy import array, float64
 
-def get_lens_param(is_td=True, **kwargs):
+def get_lens_param(zS, zL, y0, y1, is_td=True, **kwargs):
     
-    y0 = kwargs['y0']
-    y1 = kwargs['y1']
     l0 = kwargs['l0']
     l1 = kwargs['l1']
-    zS = kwargs['zS']
-    zL = kwargs['zL']
     mL = kwargs['mL']
     optim = kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
@@ -52,9 +48,9 @@ def get_lens_param(is_td=True, **kwargs):
     else:
         return hp_tilde_lensed, hc_tilde_lensed, hp.delta_f
 
-def lensed_gw_fd(**kwargs):
-    hp_tilde_lensed, hc_tilde_lensed, delta_f = get_lens_param(is_td=False,**kwargs)
+def lensed_gw_fd(zS=2.0, zL=0.5, y0=0.3, y1=0.3,**kwargs):
+    hp_tilde_lensed, hc_tilde_lensed, delta_f = get_lens_param(zS, zL, y0, y1, is_td=False,**kwargs)
     return hp_tilde_lensed.to_frequencyseries(delta_f=delta_f), hc_tilde_lensed.to_frequencyseries(delta_f=delta_f)
 
-def lensed_gw_td(**kwargs):
-    return get_lens_param(is_td=True,**kwargs)
+def lensed_gw_td(zS=2.0, zL=0.5, y0=0.3, y1=0.3, **kwargs):
+    return get_lens_param(zS, zL, y0, y1, is_td=True,**kwargs)
