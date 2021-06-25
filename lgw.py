@@ -37,9 +37,9 @@ def get_lens_param(ml, l0, l1, zs, zl, y0, y1, is_td=True, **kwargs):
     #------------return numpy values---------------#
     hp_tilde_lensed, hc_tilde_lensed = get_lensed_gws(Fmag, hp.data, hc.data)
     #------------convert to pycbc.TimeSeries/FrequencySeries---------------#
-    hp_tilde_lensed = TimeSeries(hp_tilde_lensed, delta_t=hp.delta_t)
+    hp_tilde_lensed = TimeSeries(hp_tilde_lensed[0], delta_t=hp.delta_t)
     hp_tilde_lensed.start_time += hp.start_time
-    hc_tilde_lensed = TimeSeries(hc_tilde_lensed, delta_t=hc.delta_t)
+    hc_tilde_lensed = TimeSeries(hc_tilde_lensed[0], delta_t=hc.delta_t)
     hc_tilde_lensed.start_time += hc.start_time
     if is_td:
         return hp_tilde_lensed, hc_tilde_lensed  
