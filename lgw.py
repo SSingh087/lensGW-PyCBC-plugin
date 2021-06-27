@@ -113,8 +113,7 @@ def lensed_gw_fd(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
     hp_tilde_lensed, hc_tilde_lensed, delta_f = get_lens_param(ml, lens_ra, lens_dec, zs, zl, 
                                                 n_images=1, source_ra, source_dec, is_td=False,**kwargs)
-    return hp_tilde_lensed.to_frequencyseries(delta_f=delta_f), 
-            hc_tilde_lensed.to_frequencyseries(delta_f=delta_f)
+    return hp_tilde_lensed.to_frequencyseries(delta_f=delta_f), hc_tilde_lensed.to_frequencyseries(delta_f=delta_f)
 
 def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, 
                 n_images=1, **kwargs):
