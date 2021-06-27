@@ -8,6 +8,34 @@ from numpy import array, float64
 
 def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_images=1,
                     is_td=True, **kwargs):
+                    
+    """
+    Evaluates the lensed waveform with respect to the given parameters
+    :param mL: lens mass
+    :type mL: float
+    :param source_ra: Right accession of the source of GW (in radians)
+    :type source_ra: float
+    :param source_dec: Declination of the source of GW (in radians)
+    :type source_dec: float
+    :param lens_ra: Right accession of the lens (in radians)
+    :type lens_ra: array
+    :param lens_dec: Declination of the lens (in radians)
+    :type lens_dec: array
+    :param zl: lens redshift
+    :type zl: float
+    :param zs: source redshift
+    :type zs: float
+    :param n_images: Number of images to output (should be less than total images found)
+    :type n_images: integer
+    :param is_td: Is time domain ?
+    :type is_td: Bool (default True)
+    :param: **kwargs: other lens parameters
+    
+    :return:
+    :param: hp_tilde_lensed, hp_tilde_lensed, delta_f (only for Frequecy Domain)
+    :rtype: TimeSeries, TimeSeries, float
+    """
+    
     optim = kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
     ml, l0, l1 = array(ml,dtype=float64), array(l0,dtype=float64), array(l1,dtype=float64)
@@ -40,17 +68,48 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
     #------------convert to pycbc.TimeSeries/FrequencySeries---------------#
     #iterating wrt to number of images corresponding to each time delay
     
-    for i in range(n_images):
-        hp_tilde_lensed = TimeSeries(hp_tilde_lensed, delta_t=hp.delta_t)
-        hp_tilde_lensed.start_time += hp.start_time
-        hc_tilde_lensed = TimeSeries(hc_tilde_lensed, delta_t=hc.delta_t)
-        hc_tilde_lensed.start_time += hc.start_time
+    hp_tilde_lensed = TimeSeries(hp_tilde_lensed, delta_t=hp.delta_t)
+    hp_tilde_lensed.start_time += hp.start_time
+    hc_tilde_lensed = TimeSeries(hc_tilde_lensed, delta_t=hc.delta_t)
+    hc_tilde_lensed.start_time += hc.start_time
+    
+    # only returns nth image
     if is_td:
-        return hp_tilde_lensed, hc_tilde_lensed  
+        return hp_tilde_lensed[0], hc_tilde_lensed[0]  
     else:
-        return hp_tilde_lensed, hc_tilde_lensed, hp.delta_f
+        return hp_tilde_lensed[0], hc_tilde_lensed[0], hp.delta_f
+        
+        
+    
+    #if n_images <= len(Img_ra):
+        #if is_td:
+            #return hp_tilde_lensed[:n,:], hc_tilde_lensed[:n,:]  
+        #else:
+            #return hp_tilde_lensed[:n,:], hc_tilde_lensed[:n,:], hp.delta_f
 
-def lensed_gw_fd(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, **kwargs):
+def lensed_gw_fd(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3,
+                n_images=1, **kwargs):
+    """
+    Returns the lensed waveform in Frequecy domain
+    :param mL: lens mass (default: 1e8)
+    :type mL: float
+    :param source_ra: Right accession of the source of GW (in radians) (default: 0.3)
+    :type source_ra: float
+    :param source_dec: Declination of the source of GW (in radians) (default: 0.3)
+    :type source_dec: float
+    :param lens_ra: Right accession of the lens (in radians) (default: 0.5)
+    :type lens_ra: array
+    :param lens_dec: Declination of the lens (in radians) (default: 0)
+    :type lens_dec: array
+    :param zl: lens redshift (default: 0.5)
+    :type zl: float
+    :param zs: source redshift (default: 2)
+    :type zs: float
+    :param n_images: Number of images to output (should be less than total images found)
+    :type n_images: integer
+    :param: **kwargs: other lens parameters
+    """
+    
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
     hp_tilde_lensed, hc_tilde_lensed, delta_f = get_lens_param(ml, lens_ra, lens_dec, zs, zl, 
                                                 n_images=1, source_ra, source_dec, is_td=False,**kwargs)
@@ -59,6 +118,25 @@ def lensed_gw_fd(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
 
 def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, 
                 n_images=1, **kwargs):
+    """
+    Returns the lensed waveform in Time domain
+    :param mL: lens mass (default: 1e8)
+    :type mL: float
+    :param source_ra: Right accession of the source of GW (in radians) (default: 0.3)
+    :type source_ra: float
+    :param source_dec: Declination of the source of GW (in radians) (default: 0.3)
+    :type source_dec: float
+    :param lens_ra: Right accession of the lens (in radians) (default: 0.5)
+    :type lens_ra: array
+    :param lens_dec: Declination of the lens (in radians) (default: 0)
+    :type lens_dec: array
+    :param zl: lens redshift (default: 0.5)
+    :type zl: float
+    :param zs: source redshift (default: 2)
+    :type zs: float
+    :param: **kwargs: other lens parameters
+    """
+ 
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
     return get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, 
                             n_images=1, is_td=True,**kwargs)
