@@ -47,7 +47,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
     #                                                y0,y1,l0,l1,zS,zL,mL,lens_model_list,optim)
     #elif len(mL)==1:
 
-    Img_ra, Img_dec, _, _, _, _, _, _, _, kwargs_lens_list=lens_waveform_model(None).eval_param(
+    Img_ra, Img_dec, kwargs_lens_list=lens_waveform_model(None).eval_param(
                                                     source_ra, source_dec, lens_ra, lens_dec, 
                                                     zS, zL, mL, lens_model_list, optim='False')
 
