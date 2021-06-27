@@ -75,9 +75,9 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
     
     # only returns nth image
     if is_td:
-        return hp_tilde_lensed[0], hc_tilde_lensed[0]  
+        return hp_tilde_lensed[n_images-1], hc_tilde_lensed[n_images-1]  
     else:
-        return hp_tilde_lensed[0], hc_tilde_lensed[0], hp.delta_f
+        return hp_tilde_lensed[n_images-1], hc_tilde_lensed[n_images-1], hp.delta_f
         
         
     
