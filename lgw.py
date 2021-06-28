@@ -11,8 +11,8 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
                     
     """
     Evaluates the lensed waveform with respect to the given parameters
-    :param mL: lens mass
-    :type mL: float
+    :param ml: lens mass
+    :type ml: float
     :param source_ra: Right accession of the source of GW (in radians)
     :type source_ra: float
     :param source_dec: Declination of the source of GW (in radians)
@@ -38,7 +38,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
     
     optim = kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
-    ml, l0, l1 = array(ml,dtype=float64), array(l0,dtype=float64), array(l1,dtype=float64)
+    ml, lens_ra, lens_dec = array(ml,dtype=float64), array(lens_ra,dtype=float64), array(lens_dec,dtype=float64)
 
     #if mL.shape[1]>1:
     #    mL, l0, l1 = mL.squeeze(axis=0), l0.squeeze(axis=0), l1.squeeze(axis=0)
@@ -49,7 +49,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
 
     Img_ra, Img_dec, kwargs_lens_list=lens_waveform_model(None).eval_param(
                                                     source_ra, source_dec, lens_ra, lens_dec, 
-                                                    zS, zL, mL, lens_model_list, optim='False')
+                                                    zs, zl, ml, lens_model_list, optim='False')
 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
@@ -119,8 +119,8 @@ def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
                 n_images=1, **kwargs):
     """
     Returns the lensed waveform in Time domain
-    :param mL: lens mass (default: 1e8)
-    :type mL: float
+    :param ml: lens mass (default: 1e8)
+    :type ml: float
     :param source_ra: Right accession of the source of GW (in radians) (default: 0.3)
     :type source_ra: float
     :param source_dec: Declination of the source of GW (in radians) (default: 0.3)
