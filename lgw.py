@@ -37,7 +37,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, **kwarg
 
     #https://github.com/SSingh087/lensGW-PyCBC-plugin/issues/10
 
-    MacroImg_ra, MacroImg_dec,\
+    Img_ra, Img_dec, MacroImg_ra, MacroImg_dec,\
                 kwargs_lens_list, solver_kwargs = lens_waveform_model(None).eval_param(
                                                             source_ra, source_dec, lens_ra, lens_dec, 
                                                             zs, zl, ml, lens_model_list, optim)
