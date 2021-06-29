@@ -92,7 +92,8 @@ def lensed_gw_fd(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
     """
     
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
-    return get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, **kwargs)
+    return get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec,
+                        is_td='False', **kwargs)
 
 def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, **kwargs):
     """
@@ -115,6 +116,7 @@ def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
     """
 
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
-    hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, **kwargs)
+    hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec,
+                                                    is_td='True', **kwargs)
     hp_td_tilde_lensed, hc_td_tilde_lensed = hp_fd.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t), hc_fd.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
     return hp_td_tilde_lensed, hc_td_tilde_lensed
