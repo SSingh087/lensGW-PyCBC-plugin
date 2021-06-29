@@ -44,7 +44,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
         kwargs.pop("approximant")
         if is_td:
             hp_td, hc_td = waveform.get_td_waveform(approximant='IMRPhenomD', **kwargs)
-            hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_tf.to_frequencyseries()
+            hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
         else: 
             hp_fd, hc_fd = waveform.get_fd_waveform(approximant='IMRPhenomD', **kwargs)
 
@@ -118,5 +118,6 @@ def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
     hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec,
                                                     is_td='True', **kwargs)
-    hp_td_tilde_lensed, hc_td_tilde_lensed = hp_fd.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t), hc_fd.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
+    hp_td_tilde_lensed = hp_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
+    hc_td_tilde_lensed = hc_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
     return hp_td_tilde_lensed, hc_td_tilde_lensed
