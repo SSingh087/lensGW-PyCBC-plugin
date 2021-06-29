@@ -49,7 +49,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, n_image
 
     Img_ra, Img_dec, kwargs_lens_list=lens_waveform_model(None).eval_param(
                                                     source_ra, source_dec, lens_ra, lens_dec, 
-                                                    zs, zl, ml, lens_model_list, optim='False')
+                                                    zs, zl, ml, lens_model_list, optim)
 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
