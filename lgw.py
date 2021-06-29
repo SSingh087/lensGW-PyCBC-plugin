@@ -6,8 +6,7 @@ from pycbc.types.frequencyseries import FrequencySeries
 from pycbc import waveform
 from numpy import array, float64
 
-def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, **kwargs):
-                    
+def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, **kwargs):
     """
     Evaluates the lensed waveform with respect to the given parameters
     :param ml: lens mass
@@ -43,7 +42,11 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, **kwarg
 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
-        hp_fd, hc_fd = waveform.get_fd_waveform(approximant='IMRPhenomD', **kwargs)
+        if is_td:
+            hp_td, hc_td = waveform.get_td_waveform(approximant='IMRPhenomD', **kwargs)
+            hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_tf.to_frequencyseries()
+        else: 
+            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='IMRPhenomD', **kwargs)
 
     freq = hp_fd.sample_frequencies.data #since hp.sample_frequencies.data == hc.sample_frequencies.data (always)
     Fmag = geometricalOpticsMagnification(freq, Img_ra, Img_dec,
@@ -110,7 +113,7 @@ def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
     :type zs: float
     :param: **kwargs: other lens parameters
     """
-    
+
     ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
     hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, **kwargs)
     hp_td_tilde_lensed, hc_td_tilde_lensed = hp_fd.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t), hc_fd.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
