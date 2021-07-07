@@ -62,7 +62,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
-        if is_td:
+        if is_td is 'True':
             hp_td, hc_td = waveform.get_td_waveform(approximant='IMRPhenomD', **kwargs)
             hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
         else: 
