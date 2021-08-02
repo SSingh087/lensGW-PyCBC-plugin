@@ -18,7 +18,7 @@ setup (
     author_email = 'shashwat98singh@gmail.com',
     download_url = 'https://github.com/SSingh087/lensGW-PyCBC-plugin',
     keywords = ['pycbc', 'signal processing', 'gravitational waves','strong gravitational lensing'],
-    install_requires = ['pycbc>1.17.0','lensGW'],
+    install_requires = ['pycbc','lensGW'],
     py_modules = ['lgw'],
     entry_points = {"pycbc.waveform.td":"lgw = lgw:lensed_gw_td",
                     "pycbc.waveform.fd":"lgw = lgw:lensed_gw_fd"},
