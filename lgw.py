@@ -17,7 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-
 from lensGW.waveform.waveform_utils import lens_waveform_model
 from lensGW.amplification_factor.amplification_factor import geometricalOpticsMagnification
 from lensGW.utils.utils import get_lensed_gws
@@ -52,7 +51,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
     
     optim = kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
-    ml, lens_ra, lens_dec = array(ml,dtype=float64), array(lens_ra,dtype=float64), array(lens_dec,dtype=float64)
+    ml, lens_ra, lens_dec = array(ml, dtype=float64), array(lens_ra, dtype=float64), array(lens_dec, dtype=float64)
 
     #https://github.com/SSingh087/lensGW-PyCBC-plugin/issues/10
 
@@ -63,10 +62,11 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
         if is_td is 'True':
-            hp_td, hc_td = waveform.get_td_waveform(approximant='IMRPhenomD', **kwargs)
+            # currently works only for the dominant 2,2 mode 
+            hp_td, hc_td = waveform.get_td_waveform(approximant='TaylorF2', **kwargs)
             hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
         else: 
-            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='IMRPhenomD', **kwargs)
+            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='TaylorF2', **kwargs)
 
     freq = hp_fd.sample_frequencies.data #since hp.sample_frequencies.data == hc.sample_frequencies.data (always)
     Fmag = geometricalOpticsMagnification(freq, Img_ra, Img_dec,
@@ -89,22 +89,22 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
     return hp_fd_tilde_lensed, hc_fd_tilde_lensed
 
 
-def lensed_gw_fd(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, **kwargs):
+def lensed_gw_fd(ml=1e8, lens_ra=0.0, lens_dec=0.0, zs=1.0, zl=0.5, source_ra=0.5, source_dec=0.5, **kwargs):
     """
     Returns the lensed waveform in Frequecy domain
     :param mL: lens mass (default: 1e8)
     :type mL: float
-    :param source_ra: Right accession of the source of GW (in radians) (default: 0.3)
+    :param source_ra: Right accession of the source of GW (in radians) (default: 0.0)
     :type source_ra: float
-    :param source_dec: Declination of the source of GW (in radians) (default: 0.3)
+    :param source_dec: Declination of the source of GW (in radians) (default: 0.0)
     :type source_dec: float
     :param lens_ra: Right accession of the lens (in radians) (default: 0.5)
     :type lens_ra: array
-    :param lens_dec: Declination of the lens (in radians) (default: 0)
+    :param lens_dec: Declination of the lens (in radians) (default: 0.5)
     :type lens_dec: array
     :param zl: lens redshift (default: 0.5)
     :type zl: float
-    :param zs: source redshift (default: 2)
+    :param zs: source redshift (default: 1)
     :type zs: float
     :param n_images: Number of images to output (should be less than total images found)
     :type n_images: integer
