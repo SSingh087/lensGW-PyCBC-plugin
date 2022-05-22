@@ -16,6 +16,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import sys
+sys.path.append('../lensGW/')
+
 
 from lensGW.waveform.waveform_utils import lens_waveform_model
 from lensGW.amplification_factor.amplification_factor import geometricalOpticsMagnification
@@ -25,11 +28,11 @@ from pycbc.types.frequencyseries import FrequencySeries
 from pycbc import waveform
 from numpy import array, float64
 
-def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, **kwargs):
+def eval_lensed_waveform(mL, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, **kwargs):
     """
     Evaluates the lensed waveform with respect to the given parameters
-    :param ml: lens mass
-    :type ml: float
+    :param mL: lens mass
+    :type mL: float
     :param source_ra: Right accession of the source of GW (in radians)
     :type source_ra: float
     :param source_dec: Declination of the source of GW (in radians)
@@ -49,24 +52,21 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
     :rtype: TimeSeries, TimeSeries, float
     """
     
-    optim = kwargs['optim']
+    optim = False #kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
-    ml, lens_ra, lens_dec = array(ml, dtype=float64), array(lens_ra, dtype=float64), array(lens_dec, dtype=float64)
-
-    #https://github.com/SSingh087/lensGW-PyCBC-plugin/issues/10
-
-    Img_ra, Img_dec, kwargs_lens_list, solver_kwargs = lens_waveform_model(None).eval_param(
+    
+    Img_ra, Img_dec, kwargs_lens_list, solver_kwargs = lens_waveform_model.eval_param(
                                                             source_ra, source_dec, lens_ra, lens_dec, 
-                                                            zs, zl, ml, lens_model_list, optim)
+                                                            zs, zl, mL, lens_model_list, optim)
 
     if "approximant" in kwargs:
         kwargs.pop("approximant")
-        if is_td is 'True':
-            # currently works only for the dominant 2,2 mode 
-            hp_td, hc_td = waveform.get_td_waveform(approximant='TaylorF2', **kwargs)
-            hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
-        else: 
-            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='TaylorF2', **kwargs)
+    if is_td == 'True':
+        # currently works only for the dominant 2,2 mode 
+        hp_td, hc_td = waveform.get_td_waveform(approximant='TaylorF2', **kwargs)
+        hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
+    else: 
+        hp_fd, hc_fd = waveform.get_fd_waveform(approximant='TaylorF2', **kwargs)
 
     freq = hp_fd.sample_frequencies.data #since hp.sample_frequencies.data == hc.sample_frequencies.data (always)
     Fmag = geometricalOpticsMagnification(freq, Img_ra, Img_dec,
@@ -89,7 +89,7 @@ def get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec, is_td, 
     return hp_fd_tilde_lensed, hc_fd_tilde_lensed
 
 
-def lensed_gw_fd(ml=1e8, lens_ra=0.0, lens_dec=0.0, zs=1.0, zl=0.5, source_ra=0.5, source_dec=0.5, **kwargs):
+def lensed_gw_fd(mL=1e8, lens_ra=0.0, lens_dec=0.0, zs=1.0, zl=0.5, source_ra=0.5, source_dec=0.5, **kwargs):
     """
     Returns the lensed waveform in Frequecy domain
     :param mL: lens mass (default: 1e8)
@@ -110,16 +110,15 @@ def lensed_gw_fd(ml=1e8, lens_ra=0.0, lens_dec=0.0, zs=1.0, zl=0.5, source_ra=0.
     :type n_images: integer
     :param: **kwargs: other lens parameters
     """
-    
-    ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
-    return get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec,
+
+    return eval_lensed_waveform([mL], [lens_ra], [lens_dec], zs, zl, source_ra, source_dec,
                         is_td='False', **kwargs)
 
-def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, **kwargs):
+def lensed_gw_td(mL=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, **kwargs):
     """
     Returns the lensed waveform in Time domain
-    :param ml: lens mass (default: 1e8)
-    :type ml: float
+    :param mL: lens mass (default: 1e8)
+    :type mL: float
     :param source_ra: Right accession of the source of GW (in radians) (default: 0.3)
     :type source_ra: float
     :param source_dec: Declination of the source of GW (in radians) (default: 0.3)
@@ -135,9 +134,38 @@ def lensed_gw_td(ml=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
     :param: **kwargs: other lens parameters
     """
 
-    ml, lens_ra, lens_dec = [ml], [lens_ra], [lens_dec]
-    hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lens_param(ml, lens_ra, lens_dec, zs, zl, source_ra, source_dec,
+    hp_fd_tilde_lensed, hc_fd_tilde_lensed = eval_lensed_waveform([mL], [lens_ra], [lens_dec], zs, zl, source_ra, source_dec,
                                                     is_td='True', **kwargs)
     hp_td_tilde_lensed = hp_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
     hc_td_tilde_lensed = hc_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
     return hp_td_tilde_lensed, hc_td_tilde_lensed
+
+if __name__ == '__main__':
+    source_ra=0.0
+    source_dec=0.0
+    lens_ra=0.1
+    lens_dec=0.2
+    zs=2.0
+    zl=0.5
+    mL=1e8
+    lens_model_list=['POINT_MASS']
+    mass1=30
+    mass2=30
+    delta_t=1.0/4096
+    f_lower=9
+    distance=6791.8106
+
+    hp_tilde_lensed, hc_tilde_lensed = lensed_gw_td(
+                                        source_ra=source_ra, source_dec=source_dec, 
+                                        lens_ra=lens_ra, lens_dec=lens_dec, distance=distance,
+                                        zs=zs, zl=zl, mL=mL, lens_model_list=lens_model_list,
+                                        mass1=mass1, mass2=mass2, delta_t=delta_t, f_lower=f_lower)
+    hp, hc = waveform.get_td_waveform(approximant='TaylorF2', mass1=mass1, distance=distance,
+                                  mass2=mass2, delta_t=delta_t, f_lower=f_lower)
+    import pylab
+    hp_tilde_lensed.start_time = hp.start_time
+    pylab.plot(hp_tilde_lensed.sample_times, hp_tilde_lensed)
+    pylab.plot(hp.sample_times, hp)
+    pylab.legend(ncol=2, fontsize=12)
+    pylab.grid()
+    pylab.savefig('a.png')
