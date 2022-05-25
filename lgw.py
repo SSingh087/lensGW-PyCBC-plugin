@@ -16,10 +16,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import sys
-sys.path.append('../lensGW/')
-
-
 from lensGW.waveform.waveform_utils import lens_waveform_model
 from lensGW.amplification_factor.amplification_factor import geometricalOpticsMagnification
 from lensGW.utils.utils import get_lensed_gws
