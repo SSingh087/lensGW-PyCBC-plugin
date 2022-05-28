@@ -142,7 +142,7 @@ def lensed_gw_td(mL=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
 
     hp_fd_tilde_lensed, hc_fd_tilde_lensed = eval_lensed_waveform([mL], [lens_ra], [lens_dec], zs, zl, source_ra, source_dec,
                                                     is_td='True', **kwargs)
-    if hp_td_tilde_lensed is not None and hc_td_tilde_lensed is not None:
+    if hp_fd_tilde_lensed is not None and hc_fd_tilde_lensed is not None:
         hp_td_tilde_lensed = hp_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
         hc_td_tilde_lensed = hc_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
         hp_td_tilde_lensed.start_time, hc_td_tilde_lensed.start_time = -hp_td_tilde_lensed.duration, -hc_td_tilde_lensed.duration
