@@ -16,6 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
+
 from lensGW.waveform.waveform_utils import lens_waveform_model
 from lensGW.amplification_factor.amplification_factor import geometricalOpticsMagnification
 from lensGW.utils.utils import get_lensed_gws
@@ -48,41 +50,44 @@ def eval_lensed_waveform(mL, lens_ra, lens_dec, zs, zl, source_ra, source_dec, i
     :rtype: TimeSeries, TimeSeries, float
     """
     
-    optim = False #kwargs['optim']
+    optim = True #kwargs['optim']
     lens_model_list = kwargs['lens_model_list']
     
     Img_ra, Img_dec, kwargs_lens_list, solver_kwargs = lens_waveform_model.eval_param(
                                                             source_ra, source_dec, lens_ra, lens_dec, 
                                                             zs, zl, mL, lens_model_list, optim)
+    if Img_ra is not None and Img_dec is not None:
 
-    if "approximant" in kwargs:
-        kwargs.pop("approximant")
-    if is_td == 'True':
-        # currently works only for the dominant 2,2 mode 
-        hp_td, hc_td = waveform.get_td_waveform(approximant='TaylorF2', **kwargs)
-        hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
-    else: 
-        hp_fd, hc_fd = waveform.get_fd_waveform(approximant='TaylorF2', **kwargs)
+        if "approximant" in kwargs:
+            kwargs.pop("approximant")
+        if is_td == 'True':
+            # currently works only for the dominant 2,2 mode 
+            hp_td, hc_td = waveform.get_td_waveform(approximant='TaylorF2', **kwargs)
+            hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
+        else: 
+            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='TaylorF2', **kwargs)
 
-    freq = hp_fd.sample_frequencies.data #since hp.sample_frequencies.data == hc.sample_frequencies.data (always)
-    Fmag = geometricalOpticsMagnification(freq, Img_ra, Img_dec,
-                                           source_ra, source_dec,
-                                           zl, zs, lens_model_list, 
-                                           kwargs_lens_list,
-                                           diff         = None,
-                                           scaled       = solver_kwargs['Scaled'],
-                                           scale_factor = solver_kwargs['ScaleFactor'],
-                                           cosmo        = None)
-                                           
-    #------------return numpy values---------------#
-    hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lensed_gws(Fmag, hp_fd.data, hc_fd.data)
-    
-    #------------convert to pycbc.FrequencySeries---------------#
+        freq = hp_fd.sample_frequencies.data #since hp.sample_frequencies.data == hc.sample_frequencies.data (always)
+        Fmag = geometricalOpticsMagnification(freq, Img_ra, Img_dec,
+                                               source_ra, source_dec,
+                                               zl, zs, lens_model_list, 
+                                               kwargs_lens_list,
+                                               diff         = None,
+                                               scaled       = solver_kwargs['Scaled'],
+                                               scale_factor = solver_kwargs['ScaleFactor'],
+                                               cosmo        = None)
+                                               
+        #------------return numpy values---------------#
+        hp_fd_tilde_lensed, hc_fd_tilde_lensed = get_lensed_gws(Fmag, hp_fd.data, hc_fd.data)
+        
+        #------------convert to pycbc.FrequencySeries---------------#
 
-    hp_fd_tilde_lensed = FrequencySeries(hp_fd_tilde_lensed, delta_f=hp_fd.delta_f)
-    hc_fd_tilde_lensed = FrequencySeries(hc_fd_tilde_lensed, delta_f=hc_fd.delta_f)
-    
-    return hp_fd_tilde_lensed, hc_fd_tilde_lensed
+        hp_fd_tilde_lensed = FrequencySeries(hp_fd_tilde_lensed, delta_f=hp_fd.delta_f)
+        hc_fd_tilde_lensed = FrequencySeries(hc_fd_tilde_lensed, delta_f=hc_fd.delta_f)
+        
+        return hp_fd_tilde_lensed, hc_fd_tilde_lensed
+    else:
+        return None, None
 
 
 def lensed_gw_fd(mL=1e8, lens_ra=0.0, lens_dec=0.0, zs=1.0, zl=0.5, source_ra=0.5, source_dec=0.5, **kwargs):
@@ -107,8 +112,13 @@ def lensed_gw_fd(mL=1e8, lens_ra=0.0, lens_dec=0.0, zs=1.0, zl=0.5, source_ra=0.
     :param: **kwargs: other lens parameters
     """
 
-    return eval_lensed_waveform([mL], [lens_ra], [lens_dec], zs, zl, source_ra, source_dec,
+    hp_fd_tilde_lensed, hc_fd_tilde_lensed = eval_lensed_waveform([mL], [lens_ra], [lens_dec], zs, zl, source_ra, source_dec,
                         is_td='False', **kwargs)
+    if hp_fd_tilde_lensed is not None and hc_fd_tilde_lensed is not None:
+        hp_fd_tilde_lensed.start_time, hc_fd_tilde_lensed.start_time = -hp_fd_tilde_lensed.duration, -hc_fd_tilde_lensed.duration
+        return hp_fd_tilde_lensed, hc_fd_tilde_lensed
+    else:
+        return None, None
 
 def lensed_gw_td(mL=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3, source_dec=0.3, **kwargs):
     """
@@ -132,7 +142,10 @@ def lensed_gw_td(mL=1e8, lens_ra=0.5, lens_dec=0, zs=2.0, zl=0.5, source_ra=0.3,
 
     hp_fd_tilde_lensed, hc_fd_tilde_lensed = eval_lensed_waveform([mL], [lens_ra], [lens_dec], zs, zl, source_ra, source_dec,
                                                     is_td='True', **kwargs)
-    hp_td_tilde_lensed = hp_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
-    hc_td_tilde_lensed = hc_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
-    return hp_td_tilde_lensed, hc_td_tilde_lensed
-
+    if hp_td_tilde_lensed is not None and hc_td_tilde_lensed is not None:
+        hp_td_tilde_lensed = hp_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
+        hc_td_tilde_lensed = hc_fd_tilde_lensed.to_timeseries(delta_t=hp_fd_tilde_lensed.delta_t)
+        hp_td_tilde_lensed.start_time, hc_td_tilde_lensed.start_time = -hp_td_tilde_lensed.duration, -hc_td_tilde_lensed.duration
+        return hp_td_tilde_lensed, hc_td_tilde_lensed
+    else:
+        return None, None
