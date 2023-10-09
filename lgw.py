@@ -62,10 +62,10 @@ def eval_lensed_waveform(mL, lens_ra, lens_dec, zs, zl, source_ra, source_dec, i
             kwargs.pop("approximant")
         if is_td == 'True':
             # currently works only for the dominant 2,2 mode 
-            hp_td, hc_td = waveform.get_td_waveform(approximant='TaylorF2', **kwargs)
+            hp_td, hc_td = waveform.get_td_waveform(approximant='IMRPhenomD', **kwargs)
             hp_fd, hc_fd = hp_td.to_frequencyseries(), hc_td.to_frequencyseries()
         else: 
-            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='TaylorF2', **kwargs)
+            hp_fd, hc_fd = waveform.get_fd_waveform(approximant='IMRPhenomD', **kwargs)
 
         freq = hp_fd.sample_frequencies.data #since hp.sample_frequencies.data == hc.sample_frequencies.data (always)
         Fmag = geometricalOpticsMagnification(freq, Img_ra, Img_dec,
